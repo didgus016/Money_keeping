@@ -61,6 +61,7 @@
             android:text="Date : "
             android:gravity="center_vertical"
             android:theme="@style/FieldName"/>
+
         <EditText
             android:id="@+id/expenditure_date"
             android:layout_width="wrap_content"

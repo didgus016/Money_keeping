@@ -12,11 +12,21 @@ public class Expenditure {
     private Date expenditureDate;
     private String description;
 
+    public Expenditure() {
+        this.expenditureName = "void";
+        this.expenditureAmount = 0;
+        this.description = "void";
+    }
+
     public Expenditure(String name, float amount, Date date, String desc) {
         this.expenditureName = name;
         this.expenditureAmount = amount;
         this.expenditureDate = date;
         this.description = desc;
+    }
+
+    public static Expenditure createExpenditure(String name, float amount, Date date, String desc) {
+        return new Expenditure(name, amount, date, desc);
     }
 
     public String getName() {
