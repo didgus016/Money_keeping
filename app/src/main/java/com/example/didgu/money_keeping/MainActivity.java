@@ -1,25 +1,37 @@
 package com.example.didgu.money_keeping;
 
-import android.content.Intent;
+import android.app.DialogFragment;
 import android.icu.text.DateFormat;
-import android.icu.text.NumberFormat;
 import android.icu.text.SimpleDateFormat;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
 import java.text.ParseException;
 import java.util.Date;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity{
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        EditText dateEditText = (EditText) findViewById(R.id.expenditure_date);
+        dateEditText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Pop up a DatePickerDialog then format
+                DialogFragment newFragment = new DatePickerFragment();
+                newFragment.show(getFragmentManager(), "Date Picker");
+            }
+        });
+
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -36,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
         EditText desc_field = (EditText) findViewById(R.id.description);
         String description = desc_field.getText().toString();
 
+        // Add to the ArrayList
         Expenditure newExpenditure = Expenditure.createExpenditure(name, amount, date, description);
 
         /*
