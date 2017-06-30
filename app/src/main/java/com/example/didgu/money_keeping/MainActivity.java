@@ -23,6 +23,8 @@ public class MainActivity extends AppCompatActivity{
         setContentView(R.layout.activity_main);
 
         EditText dateEditText = (EditText) findViewById(R.id.expenditure_date);
+
+        // Sets onClickListener for date field click
         dateEditText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -34,13 +36,20 @@ public class MainActivity extends AppCompatActivity{
 
     }
 
+    /**
+     *
+     * Receives information from EditText fields and creates a new instantiation of
+     * Expenditure class
+     * @throws ParseException
+     */
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public void addExpend(View view) throws ParseException {
+    public void addExpend() throws ParseException {
         String name = ((EditText) findViewById(R.id.expenditure_name)).getText().toString();
 
         String amount_str = ((EditText) findViewById(R.id.money_amount)).getText().toString();
         float amount = Float.parseFloat(amount_str);
 
+        // parses and formats the date and converts into Date class
         String date_str = ((EditText) findViewById(R.id.expenditure_date)).getText().toString();
         DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
         Date date = df.parse(date_str);

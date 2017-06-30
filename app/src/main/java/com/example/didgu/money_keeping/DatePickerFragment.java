@@ -28,6 +28,7 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
                 Theme_DeviceDefault_Light_Dialog_Alert, this, year, month, day);
     }
 
+    @Override
     public void onDateSet(DatePicker view, int year, int month, int day) {
         EditText dateEditText = (EditText) getActivity().findViewById(R.id.expenditure_date);
         dateEditText.setText(month +"/" + day + "/" + year);

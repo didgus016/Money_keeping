@@ -35,6 +35,7 @@ public class Expenditure {
         return new Expenditure(name, amount, date, desc);
     }
 
+    // Getters and Setters
     public String getName() {
         return this.expenditureName;
     }
