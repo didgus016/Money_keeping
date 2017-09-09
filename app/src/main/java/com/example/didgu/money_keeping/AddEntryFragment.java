@@ -96,6 +96,8 @@ public class AddEntryFragment extends Fragment {
 
         // Parse into type float
         float amount = Float.parseFloat(amount_str);
+        amount_str = String.format("%.2f", amount);
+        amount = Float.parseFloat(amount_str);
 
         // parses and formats the date and converts into Date class
         DateFormat df = new SimpleDateFormat("MM/dd/yyyy");

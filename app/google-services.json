@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "593356808671",
+    "firebase_url": "https://moneykeeping-787a7.firebaseio.com",
+    "project_id": "moneykeeping-787a7",
+    "storage_bucket": "moneykeeping-787a7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:593356808671:android:d9ec2b8a1dc66e04",
+        "android_client_info": {
+          "package_name": "com.example.didgu.money_keeping"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "593356808671-j65q5tog1mlgredqhphelvvu2obhe74g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.didgu.money_keeping",
+            "certificate_hash": "d2f929d78157d80aad5a6d1199b6165e36ebdf53"
+          }
+        },
+        {
+          "client_id": "593356808671-rladhp7hj0ov0jl6fot742drad2jmr5s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD6Ki1FfJsQbMPcZSGFB_Ye504KV3v4Fs4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "593356808671-rladhp7hj0ov0jl6fot742drad2jmr5s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

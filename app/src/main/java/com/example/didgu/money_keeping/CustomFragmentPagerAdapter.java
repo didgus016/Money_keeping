@@ -31,8 +31,8 @@ public class CustomFragmentPagerAdapter extends FragmentPagerAdapter {
 
     /**
      * Returns the fragment at the current position
-     * @param position
-     * @return Fragment
+     * @param position Current position of the viewPager
+     * @return Appropriate Fragment
      */
     @Override
     public Fragment getItem(int position) {
@@ -44,8 +44,8 @@ public class CustomFragmentPagerAdapter extends FragmentPagerAdapter {
 
     /**
      * Returns page title according to the position
-     * @param position
-     * @return
+     * @param position Current position of the viewPager
+     * @return String of page title
      */
     @Override
     public CharSequence getPageTitle(int position) {
