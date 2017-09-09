@@ -29,7 +29,7 @@ import java.util.Date;
 // Fragment for adding a new entry of Expenditure
 public class AddEntryFragment extends Fragment {
 
-    // RootView that the Fragment is in
+    // RootView of the Fragment
     View rootView;
     EditText dateEditText;
     EditText nameEditText;
