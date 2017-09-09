@@ -16,6 +16,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.text.ParseException;
 import java.util.Date;
 
@@ -32,6 +35,8 @@ public class AddEntryFragment extends Fragment {
     EditText nameEditText;
     EditText amountEditText;
     EditText descEditText;
+
+    DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
 
     @Nullable
     @Override
@@ -97,20 +102,11 @@ public class AddEntryFragment extends Fragment {
         // Parse into type float
         float amount = Float.parseFloat(amount_str);
         amount_str = String.format("%.2f", amount);
-        amount = Float.parseFloat(amount_str);
 
-        // parses and formats the date and converts into Date class
-        DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
-        Date date = df.parse(date_str);
-
-        // Add to the ArrayList
-        Expenditure newExpenditure = Expenditure.createExpenditure(name, amount, date, description);
-
-        /*
-        Convert float amount to String of currency
-         */
-        //NumberFormat form = NumberFormat.getCurrencyInstance();
-        //String temp = form.format(amount);
+        //Push to Firebase
+        String uid = mRootRef.child("entry").child("user1").push().getKey();
+        Expenditure newExpenditure = Expenditure.createExpenditure(name, amount_str, date_str, description, uid);
+        mRootRef.child("entry").child("user1").child(uid).setValue(newExpenditure);
     }
 
     /**
