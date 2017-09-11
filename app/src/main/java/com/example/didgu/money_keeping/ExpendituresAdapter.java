@@ -27,7 +27,7 @@ public class ExpendituresAdapter extends ArrayAdapter<Expenditure> {
         Expenditure curr = getItem(position);
         if (convertView == null)
         {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_expenditure, parent);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_expenditure, parent, false);
         }
 
         TextView name = (TextView) convertView.findViewById(R.id.name_id);

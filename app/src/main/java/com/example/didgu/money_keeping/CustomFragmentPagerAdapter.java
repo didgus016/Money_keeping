@@ -37,9 +37,9 @@ public class CustomFragmentPagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         if (position == 0)
-            return new ExpenditureListFragment();
-        else
             return new AddEntryFragment();
+        else
+            return new ExpenditureListFragment();
     }
 
     /**
@@ -50,8 +50,8 @@ public class CustomFragmentPagerAdapter extends FragmentPagerAdapter {
     @Override
     public CharSequence getPageTitle(int position) {
         if (position == 0)
-            return "Expenditure";
-        else
             return "Add";
+        else
+            return "Expenditure";
     }
 }

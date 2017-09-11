@@ -1,5 +1,6 @@
 package com.example.didgu.money_keeping;
 
+import android.app.ListFragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -33,22 +34,21 @@ public class ExpenditureListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_expend_list, container, false);
-//        entryRef.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                // Clear the ArrayList?
-//                for (DataSnapshot child:dataSnapshot.getChildren())
-//                    expends.add(child.getValue(Expenditure.class));
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//                Log.w(TAG, "loadExpend:onCancelled", databaseError.toException());
-//            }
-//        });
-        // CAN'T INFLATE?!?!
-        expends.add(new Expenditure("test", "1.00", "08/08/2017", "this is a tes", "1"));
-        populate();
+        entryRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // Clear the ArrayList?
+                expends.clear();
+                for (DataSnapshot child:dataSnapshot.getChildren())
+                    expends.add(child.getValue(Expenditure.class));
+                populate();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w(TAG, "loadExpend:onCancelled", databaseError.toException());
+            }
+        });
         return rootView;
     }
 
