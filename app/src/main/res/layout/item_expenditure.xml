@@ -5,10 +5,16 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/amount_id"
+        android:id="@+id/dollar"
+        android:text="$"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"/>
+    <TextView
+        android:id="@+id/amount_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/dollar"/>
     <TextView
         android:id="@+id/date_id"
         android:layout_width="wrap_content"
