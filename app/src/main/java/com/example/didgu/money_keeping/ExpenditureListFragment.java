@@ -1,8 +1,10 @@
 package com.example.didgu.money_keeping;
 
 import android.app.ListFragment;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,8 +19,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 
 import static android.content.ContentValues.TAG;
 
@@ -29,8 +35,9 @@ import static android.content.ContentValues.TAG;
 public class ExpenditureListFragment extends Fragment {
 
     View rootView;
-    float monthlyAllowance;
-    float remainder;
+    float monthlyAllowance = 500;
+    float remainder = 0;
+    float totalSpent = 0;
     ArrayList<Expenditure> expends = new ArrayList<>();
     DatabaseReference entryRef = FirebaseDatabase.getInstance().getReference().child("entry").child("user1");
 
@@ -39,6 +46,7 @@ public class ExpenditureListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_expend_list, container, false);
         entryRef.addValueEventListener(new ValueEventListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // Clear the ArrayList?
@@ -46,6 +54,7 @@ public class ExpenditureListFragment extends Fragment {
                 for (DataSnapshot child:dataSnapshot.getChildren())
                     expends.add(child.getValue(Expenditure.class));
                 populate();
+                calculateRemainder();
             }
 
             @Override
@@ -67,13 +76,30 @@ public class ExpenditureListFragment extends Fragment {
 
     // TODO: Get the total monthly expenditure, do subtraction
     // TODO: Change the db import to a Map of date(month year), and arraylist of details
+    @RequiresApi(api = Build.VERSION_CODES.N)
     private void calculateRemainder()
     {
         TextView tv = (TextView) rootView.findViewById(R.id.allowance);
 
-//        for (int i = 0;i<expends.size(); i++)
-//        {
-//            if (expends.get(i).dateOut())
-//        }
+        DateFormat df = new SimpleDateFormat("MM");
+        Date date = new Date();
+        String currMonth = df.format(date);
+        Log.d("Curr Month", currMonth);
+        for (int i = 0;i<expends.size(); i++)
+        {
+            try {
+                if (df.format(expends.get(i).dateOut()).equals(currMonth))
+                    totalSpent += expends.get(i).amountOut();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+        remainder = monthlyAllowance - totalSpent;
+        tv.setText(String.format("%.2f", monthlyAllowance));
+        tv = (TextView) rootView.findViewById(R.id.total);
+        tv.setText(String.format("%.2f", totalSpent));
+        tv = (TextView) rootView.findViewById(R.id.remain);
+        tv.setText(String.format("%.2f", remainder));
+
     }
 }
