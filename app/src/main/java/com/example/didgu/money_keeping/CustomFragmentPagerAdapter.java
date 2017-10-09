@@ -26,7 +26,7 @@ public class CustomFragmentPagerAdapter extends FragmentPagerAdapter {
      */
     @Override
     public int getCount() {
-        return 2;
+        return 3;
     }
 
     /**
@@ -38,8 +38,12 @@ public class CustomFragmentPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         if (position == 0)
             return new AddEntryFragment();
-        else
+        else if (position == 1)
             return new ExpenditureListFragment();
+        else if (position == 2)
+            return new SettingFragment();
+        else
+            return null;
     }
 
     /**
@@ -51,7 +55,11 @@ public class CustomFragmentPagerAdapter extends FragmentPagerAdapter {
     public CharSequence getPageTitle(int position) {
         if (position == 0)
             return "Add";
-        else
+        else if (position == 1)
             return "Expenditure";
+        else if (position == 2)
+            return "Settings";
+        else
+            return null;
     }
 }
