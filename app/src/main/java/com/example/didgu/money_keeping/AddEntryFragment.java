@@ -107,6 +107,7 @@ public class AddEntryFragment extends Fragment {
         String uid = mRootRef.child("entry").child("user1").push().getKey();
         Expenditure newExpenditure = Expenditure.createExpenditure(name, amount_str, date_str, description, uid);
         mRootRef.child("entry").child("user1").child(uid).setValue(newExpenditure);
+        Toast.makeText(getActivity(), "Entry Added", Toast.LENGTH_SHORT).show();
     }
 
     /**

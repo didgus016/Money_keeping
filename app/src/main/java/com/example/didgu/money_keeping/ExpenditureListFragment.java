@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -28,6 +29,8 @@ import static android.content.ContentValues.TAG;
 public class ExpenditureListFragment extends Fragment {
 
     View rootView;
+    float monthlyAllowance;
+    float remainder;
     ArrayList<Expenditure> expends = new ArrayList<>();
     DatabaseReference entryRef = FirebaseDatabase.getInstance().getReference().child("entry").child("user1");
 
@@ -42,7 +45,6 @@ public class ExpenditureListFragment extends Fragment {
                 expends.clear();
                 for (DataSnapshot child:dataSnapshot.getChildren())
                     expends.add(child.getValue(Expenditure.class));
-                Collections.sort(expends, new ExpenditureDateComparator());
                 populate();
             }
 
@@ -57,8 +59,21 @@ public class ExpenditureListFragment extends Fragment {
     // Sort the array and then populate the list view
     private void populate()
     {
+        Collections.sort(expends, new ExpenditureDateComparator());
         ExpendituresAdapter adapter = new ExpendituresAdapter(this.getContext(), expends);
         ListView lv = (ListView) rootView.findViewById(R.id.list);
         lv.setAdapter(adapter);
+    }
+
+    // TODO: Get the total monthly expenditure, do subtraction
+    // TODO: Change the db import to a Map of date(month year), and arraylist of details
+    private void calculateRemainder()
+    {
+        TextView tv = (TextView) rootView.findViewById(R.id.allowance);
+
+//        for (int i = 0;i<expends.size(); i++)
+//        {
+//            if (expends.get(i).dateOut())
+//        }
     }
 }
