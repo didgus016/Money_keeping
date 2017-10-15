@@ -1,8 +1,10 @@
 package com.example.didgu.money_keeping;
 
 import android.app.ListFragment;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.app.Fragment;
@@ -35,18 +37,19 @@ import static android.content.ContentValues.TAG;
 public class ExpenditureListFragment extends Fragment {
 
     View rootView;
-    float monthlyAllowance = 500;
+    float monthlyAllowance = 0;
     float remainder = 0;
     float totalSpent = 0;
     ArrayList<Expenditure> expends = new ArrayList<>();
     DatabaseReference entryRef = FirebaseDatabase.getInstance().getReference().child("entry").child("user1");
+    SharedPreferences sharedPref;
 
     @Nullable
     @Override
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_expend_list, container, false);
         entryRef.addValueEventListener(new ValueEventListener() {
-            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // Clear the ArrayList?
@@ -62,6 +65,19 @@ public class ExpenditureListFragment extends Fragment {
                 Log.w(TAG, "loadExpend:onCancelled", databaseError.toException());
             }
         });
+
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(getContext());
+
+        // TODO: Implement preference change listener
+        SharedPreferences.OnSharedPreferenceChangeListener listener =
+                new SharedPreferences.OnSharedPreferenceChangeListener() {
+                    public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
+                        // listener implementation
+                        calculateRemainder();
+                    }
+                };
+        sharedPref.registerOnSharedPreferenceChangeListener(listener);
+        calculateRemainder();
         return rootView;
     }
 
@@ -76,6 +92,7 @@ public class ExpenditureListFragment extends Fragment {
 
     // TODO: Get the total monthly expenditure, do subtraction
     // TODO: Change the db import to a Map of date(month year), and arraylist of details
+    // TODO: Compare Months and year
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void calculateRemainder()
     {
@@ -94,6 +111,7 @@ public class ExpenditureListFragment extends Fragment {
                 e.printStackTrace();
             }
         }
+        monthlyAllowance = getMonthlyAllowance();
         remainder = monthlyAllowance - totalSpent;
         tv.setText(String.format("%.2f", monthlyAllowance));
         tv = (TextView) rootView.findViewById(R.id.total);
@@ -101,5 +119,11 @@ public class ExpenditureListFragment extends Fragment {
         tv = (TextView) rootView.findViewById(R.id.remain);
         tv.setText(String.format("%.2f", remainder));
 
+    }
+
+    private float getMonthlyAllowance()
+    {
+        String allow_temp = sharedPref.getString("mAllowance", "100");
+        return Float.parseFloat(allow_temp);
     }
 }
