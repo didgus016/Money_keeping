@@ -5,4 +5,9 @@
         android:title="Something"
         android:summary="Something is true or false"
         android:defaultValue="true" />
+    <com.example.didgu.money_keeping.NumberPickerPreference
+        android:key="mAllowance"
+        android:title="Monthly Allowance"
+        android:summary="Specify the amount of money that can be spent monthly"
+        android:defaultValue="100"/>
 </PreferenceScreen>
