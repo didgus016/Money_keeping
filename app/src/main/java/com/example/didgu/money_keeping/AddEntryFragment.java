@@ -15,6 +15,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -36,6 +38,7 @@ public class AddEntryFragment extends Fragment {
     EditText descEditText;
 
     DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
+    FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
 
     @Nullable
     @Override
@@ -103,9 +106,9 @@ public class AddEntryFragment extends Fragment {
         amount_str = String.format("%.2f", amount);
 
         //Push to Firebase
-        String uid = mRootRef.child("entry").child("user1").push().getKey();
+        String uid = mRootRef.child(mUser.getUid()).push().getKey();
         Expenditure newExpenditure = Expenditure.createExpenditure(name, amount_str, date_str, description, uid);
-        mRootRef.child("entry").child("user1").child(uid).setValue(newExpenditure);
+        mRootRef.child(mUser.getUid()).child(uid).setValue(newExpenditure);
         Toast.makeText(getActivity(), "Entry Added", Toast.LENGTH_SHORT).show();
     }
 

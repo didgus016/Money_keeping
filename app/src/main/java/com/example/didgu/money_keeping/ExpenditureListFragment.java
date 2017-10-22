@@ -15,6 +15,8 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -41,8 +43,10 @@ public class ExpenditureListFragment extends Fragment {
     float remainder = 0;
     float totalSpent = 0;
     ArrayList<Expenditure> expends = new ArrayList<>();
-    DatabaseReference entryRef = FirebaseDatabase.getInstance().getReference().child("entry").child("user1");
     SharedPreferences sharedPref;
+
+    FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
+    DatabaseReference entryRef = FirebaseDatabase.getInstance().getReference().child(mUser.getUid());
 
     @Nullable
     @Override
