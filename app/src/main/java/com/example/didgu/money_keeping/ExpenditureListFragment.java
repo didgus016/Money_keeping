@@ -56,8 +56,9 @@ public class ExpenditureListFragment extends Fragment {
                 expends.clear();
                 for (DataSnapshot child:dataSnapshot.getChildren())
                     expends.add(child.getValue(Expenditure.class));
-                populate();
-                calculateRemainder();
+                calculateTotalSpent();
+                populateList();
+                populateNum();
             }
 
             @Override
@@ -65,24 +66,23 @@ public class ExpenditureListFragment extends Fragment {
                 Log.w(TAG, "loadExpend:onCancelled", databaseError.toException());
             }
         });
-
-        sharedPref = PreferenceManager.getDefaultSharedPreferences(getContext());
-
-        // TODO: Implement preference change listener
-        SharedPreferences.OnSharedPreferenceChangeListener listener =
-                new SharedPreferences.OnSharedPreferenceChangeListener() {
-                    public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
-                        // listener implementation
-                        calculateRemainder();
-                    }
-                };
-        sharedPref.registerOnSharedPreferenceChangeListener(listener);
-        calculateRemainder();
         return rootView;
     }
 
+
+    // TODO : Change so that monthly updates when the preference changes
+    @Override
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            monthlyAllowance = getMonthlyAllowance();
+            populateNum();
+        }
+    }
+
     // Sort the array and then populate the list view
-    private void populate()
+    private void populateList()
     {
         Collections.sort(expends, new ExpenditureDateComparator());
         ExpendituresAdapter adapter = new ExpendituresAdapter(this.getContext(), expends);
@@ -90,14 +90,24 @@ public class ExpenditureListFragment extends Fragment {
         lv.setAdapter(adapter);
     }
 
+    private void populateNum()
+    {
+        remainder = monthlyAllowance - totalSpent;
+
+        TextView tv = (TextView) rootView.findViewById(R.id.allowance);
+        tv.setText(String.format("%.2f", monthlyAllowance));
+        tv = (TextView) rootView.findViewById(R.id.total);
+        tv.setText(String.format("%.2f", totalSpent));
+        tv = (TextView) rootView.findViewById(R.id.remain);
+        tv.setText(String.format("%.2f", remainder));
+    }
+
     // TODO: Get the total monthly expenditure, do subtraction
     // TODO: Change the db import to a Map of date(month year), and arraylist of details
     // TODO: Compare Months and year
     @RequiresApi(api = Build.VERSION_CODES.N)
-    private void calculateRemainder()
+    private void calculateTotalSpent()
     {
-        TextView tv = (TextView) rootView.findViewById(R.id.allowance);
-
         DateFormat df = new SimpleDateFormat("MM");
         Date date = new Date();
         String currMonth = df.format(date);
@@ -111,18 +121,11 @@ public class ExpenditureListFragment extends Fragment {
                 e.printStackTrace();
             }
         }
-        monthlyAllowance = getMonthlyAllowance();
-        remainder = monthlyAllowance - totalSpent;
-        tv.setText(String.format("%.2f", monthlyAllowance));
-        tv = (TextView) rootView.findViewById(R.id.total);
-        tv.setText(String.format("%.2f", totalSpent));
-        tv = (TextView) rootView.findViewById(R.id.remain);
-        tv.setText(String.format("%.2f", remainder));
-
     }
 
     private float getMonthlyAllowance()
     {
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(getContext());
         String allow_temp = sharedPref.getString("mAllowance", "100");
         return Float.parseFloat(allow_temp);
     }

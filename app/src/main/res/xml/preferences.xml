@@ -14,5 +14,6 @@
         android:key="mAllowance"
         android:title="Monthly Allowance"
         android:summary="Specify the amount of money that can be spent monthly"
+        android:inputType="number"
         android:defaultValue="100" />
 </PreferenceScreen>
