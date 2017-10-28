@@ -11,8 +11,10 @@ import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -32,7 +34,7 @@ public class AddEntryFragment extends Fragment {
 
     // RootView of the Fragment
     View rootView;
-    EditText dateEditText;
+    TextView dateEditText;
     EditText nameEditText;
     EditText amountEditText;
     EditText descEditText;
@@ -45,7 +47,7 @@ public class AddEntryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_newentry, container, false);
 
-        dateEditText = (EditText) rootView.findViewById(R.id.expenditure_date);
+        dateEditText = (TextView) rootView.findViewById(R.id.expenditure_date);
         nameEditText = (EditText) rootView.findViewById(R.id.expenditure_name);
         amountEditText = (EditText) rootView.findViewById(R.id.money_amount);
         descEditText = (EditText) rootView.findViewById(R.id.description);
@@ -77,6 +79,9 @@ public class AddEntryFragment extends Fragment {
                 }
             }
         });
+
+        //Disable keyboard for date edittext
+
         return rootView;
     }
 
